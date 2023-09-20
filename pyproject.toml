@@ -74,7 +74,7 @@ dependencies = [
     "myst-parser",
 ]
 [tool.hatch.envs.docs.scripts]
-html = "sphinx-build -aE {args:docs} {args:docs/_build}"
+html = "sphinx-build -aE {args:docs} {args:docs/_build/html}"
 pdf = [
     "sphinx-build -aE -b latex {args:docs} {args:docs/_build}",
     "make -C {args:docs/_build}",
