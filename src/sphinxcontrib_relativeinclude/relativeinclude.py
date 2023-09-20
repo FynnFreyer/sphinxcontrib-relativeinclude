@@ -13,7 +13,6 @@ translate relative paths in the included document, so that they're relative to t
 .. warning:: This does not support nested includes yet!
 """
 
-import logging
 from os.path import relpath
 from pathlib import Path
 from typing import ClassVar, Collection, List
@@ -21,8 +20,22 @@ from typing import ClassVar, Collection, List
 from docutils.nodes import GenericNodeVisitor, Node
 from docutils.nodes import document as Document  # noqa: N812
 from docutils.parsers.rst.directives.misc import Include
+from sphinx import __display_version__
+from sphinx.util import logging
 
-from sphinxcontrib_relativeinclude.__about__ import __version__
+logger = logging.getLogger(__name__)
+
+
+def _identify(obj: object) -> str:
+    """Provide a human-readable identifier for arbitrary objects."""
+    from hashlib import md5
+
+    # this depends on a CPython implementation detail,
+    # and should not be used in arbitrary contexts
+    raw_hash = str(hash(obj) if hasattr(obj, "__hash__") else id(obj)).encode()
+    # it doesn't matter here, because this is protected and only for logging
+    pretty_hash = md5(raw_hash).hexdigest()[:6].upper()  # noqa: S324
+    return f"{obj.__class__.__name__}_{pretty_hash}"
 
 
 class LinkTranslator(GenericNodeVisitor):
@@ -63,18 +76,21 @@ class LinkTranslator(GenericNodeVisitor):
             new_relative_target = relpath(new_absolute_target, self.abs_base)
 
             node[attr] = new_relative_target  # type: ignore [index]
-
-            logging.info(f"{self}: changed {attr} in {node} from {old_target} to {new_relative_target}.")
+            logger.info(
+                f"{_identify(self)}: changed {attr} in {_identify(node)} "
+                f"from {old_target} to {new_relative_target}."
+            )
 
             if hasattr(node, "resolved"):
                 node.resolved = 1
 
     def unknown_visit(self, node: Node):
         """If we don't know a Node, we ignore it."""
-        logging.info(f"{self}: visited unknown node {node}")
+        logger.warn(f"{_identify(self)}: visited unknown node {_identify(node)} of type {type(node)}")
 
     def default_departure(self, node: Node):
         """Override abstract method for completeness."""
+        logger.info(f"{_identify(self)}: departing from {_identify(node)}.")
 
 
 class RelativeInclude(Include):
@@ -149,7 +165,11 @@ class RelativeInclude(Include):
 
             node[attr] = new_relative_target
 
-            logging.info(f"{self}: changed {attr} in {node} from {old_target} to {new_absolute_target}.")
+            logger.info(
+                f"{_identify(self)}: "
+                f"changed {attr} in {_identify(node)} "
+                f"from {old_target} to {new_absolute_target}."
+            )
 
             if hasattr(node, "resolved"):
                 node.resolved = 1
