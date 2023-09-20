@@ -1,6 +1,6 @@
 # literally just copied this from https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 
-name: Publish package to PyPI and TestPyPI
+name: Publish package to PyPI
 on: push
 
 jobs:
