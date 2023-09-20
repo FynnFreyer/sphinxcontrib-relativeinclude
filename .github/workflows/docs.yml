@@ -3,8 +3,7 @@ on: push
 
 jobs:
   build:
-    name: >-
-      Publish docs to GH-Pages
+    name: Generate HTML docs
 
     runs-on: ubuntu-latest
     steps:
@@ -36,6 +35,8 @@ jobs:
         if-no-files-found: error
 
   deploy:
+    name: Publish docs to GH-Pages
+
     needs: build
     permissions:
       pages: write
