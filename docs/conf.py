@@ -29,7 +29,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
 
-html_theme = "classic"
+html_theme = "bizstyle"
 html_static_path = ["_static"]
 
 latex_elements = {
