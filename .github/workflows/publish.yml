@@ -52,7 +52,7 @@ jobs:
 
   github-release:
     name: >-
-      Sign the sphinxcontrib-relativeinclude with Sigstore
+      Sign sphinxcontrib-relativeinclude with Sigstore
       and upload them to GitHub Release
     needs:
       - publish-to-pypi
