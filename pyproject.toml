@@ -67,6 +67,20 @@ cov = [
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11"]
 
+[tool.hatch.envs.docs]
+dependencies = [
+    "sphinx",
+    "sphinxcontrib-svg2pdfconverter[CairoSVG]",
+    "myst-parser",
+]
+[tool.hatch.envs.docs.scripts]
+html = "sphinx-build -aE {args:docs} {args:docs/_build}"
+pdf = [
+    "sphinx-build -aE -b latex {args:docs} {args:docs/_build}",
+    "make -C {args:docs/_build}",
+]
+#serve = "mkdocs serve --dev-addr localhost:8000"
+
 [tool.hatch.envs.lint]
 detached = true
 dependencies = [
