@@ -3,4 +3,4 @@
 # SPDX-License-Identifier: MIT
 __author__ = "Fynn Freyer"
 __author_email__ = "fynn.freyer@googlemail.com"
-__version__ = "0.0.4"
+__version__ = "0.0.1a0"
