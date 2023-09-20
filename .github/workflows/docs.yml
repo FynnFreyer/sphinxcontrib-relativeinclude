@@ -16,17 +16,29 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install hatch
-    - name: Check proper style
+    - name: Ensure proper style
       run: python -m hatch run lint:style
-    - name: Generate HTML docs
+    - name: Generate docs
       run: |
-        python -m hatch run docs:html
+        # generate all formats we want to distribute
+        python -m hatch run docs:build html
+        python -m hatch run docs:build pdf
+        python -m hatch run docs:build epub
+
+        # create empty dir in HTML docs site
+        mkdir -p docs/_build/html/files/
+        # move other formats into the HTML docs
+        mv \
+          docs/_build/pdf/sphinxcontrib-relativeinclude.pdf \
+          docs/_build/epub/sphinxcontrib-relativeinclude.epub \
+          docs/_build/html/files/
+        # pack everything up for further distribution
         tar \
           --dereference --hard-dereference \
           --directory docs/_build/html \
           -cvf "$RUNNER_TEMP/artifact.tar" \
           .
-    - name: Upload HTML docs
+    - name: Upload docs
       uses: actions/upload-artifact@v3
       with:
         name: github-pages

@@ -90,10 +90,11 @@ dependencies = [
     "sphinxcontrib-svg2pdfconverter[CairoSVG]",
 ]
 [tool.hatch.envs.docs.scripts]
-html = "sphinx-build -aE {args:docs} {args:docs/_build/html}"
-pdf = [
-    "sphinx-build -aE -b latex {args:docs} {args:docs/_build}",
-    "make -C {args:docs/_build}",
+build = [
+    "- rm -r docs/_build/{args}",
+    # in case of pdf we have to use the latex builder, otherwise we can proceed
+    "test '{args}' == 'pdf' && sphinx-build -aE -b latex docs docs/_build/pdf || sphinx-build -aE -b {args} docs docs/_build/{args}",
+    "test '{args}' == 'pdf' && make -C docs/_build/pdf",
 ]
 
 [tool.hatch.envs.lint]
