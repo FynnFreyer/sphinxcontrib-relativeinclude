@@ -4,6 +4,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+from sphinxcontrib_relativeinclude import RelativeInclude
 from sphinxcontrib_relativeinclude.__about__ import __version__
 
 project = "sphinxcontrib-relativeinclude"
@@ -47,3 +48,8 @@ add_module_names = False
 
 autodoc_mock_imports = ["docutils", "sphinx"]
 autodoc_member_order = "bysource"
+
+
+def setup(app):
+    """Register the directive."""
+    app.add_directive("relativeinclude", RelativeInclude)
