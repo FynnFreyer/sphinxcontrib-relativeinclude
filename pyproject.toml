@@ -38,7 +38,7 @@ dev = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude#readme"
+Documentation = "https://fynnfreyer.github.io/sphinxcontrib-relativeinclude"
 Issues = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude/issues"
 Source = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude"
 
@@ -47,20 +47,16 @@ path = "src/sphinxcontrib_relativeinclude/__about__.py"
 
 [tool.hatch.envs.default]
 [tool.hatch.envs.default.scripts]
-tag = [
-    "git tag $(hatch version)",
-    "git push --tags",
-]
 release = [
-    # check for staged or unstaged changes
+    # check for staged or unstaged changes (abort if any)
     "git diff --exit-code",
     "git diff --cached --exit-code",
-    # if none, we bump version, commit, and push
+    # if none, we bump version, and commit
     "hatch version {args:patch}",
-    "git commit -am 'build: bump version for release'",
-    "git push",
-    # afterwards publish the tag of the new version
-    "tag",
+    'git commit -am "build: bump version to $(hatch version) for release"',
+    # now generate a tag, and push to origin
+    "git tag $(hatch version)",
+    "git push origin --tags",
 ]
 
 [tool.hatch.envs.test]
@@ -93,8 +89,8 @@ dependencies = [
 build = [
     "- rm -r docs/_build/{args}",
     # in case of pdf we have to use the latex builder, otherwise we can proceed
-    "test '{args}' == 'pdf' && sphinx-build -aE -b latex docs docs/_build/pdf || sphinx-build -aE -b {args} docs docs/_build/{args}",
-    "test '{args}' == 'pdf' && make -C docs/_build/pdf",
+    'if [ "{args}" = "pdf" ]; then sphinx-build -aE -b latex docs docs/_build/pdf; else sphinx-build -aE -b {args} docs docs/_build/{args}; fi',
+    'if [ "{args}" = "pdf" ]; then make -C docs/_build/pdf; fi',
 ]
 
 [tool.hatch.envs.lint]
