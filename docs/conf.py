@@ -8,7 +8,7 @@ from sphinxcontrib_relativeinclude.__about__ import __version__
 
 project = "sphinxcontrib-relativeinclude"
 author = "Fynn Freyer"
-copyright = "2023, Fynn Freyer"  # noqa: A001
+copyright = "2023-present, Fynn Freyer"  # noqa: A001
 language = "en_US"
 
 version = __version__
@@ -19,18 +19,19 @@ release = __version__
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx_rtd_theme",
     "sphinxcontrib.cairosvgconverter",
 ]
 
-templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # -- Options for output ------------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
 
-html_theme = "bizstyle"
-html_static_path = ["_static"]
+html_theme = "sphinx_rtd_theme"
+html_static_path = ["assets"]
+templates_path = ["_templates"]
 
 latex_elements = {
     "extraclassoptions": "openany,oneside",
@@ -44,5 +45,5 @@ latex_elements = {
 
 add_module_names = False
 
-autodoc_mock_imports = ["docutils"]
+autodoc_mock_imports = ["docutils", "sphinx"]
 autodoc_member_order = "bysource"

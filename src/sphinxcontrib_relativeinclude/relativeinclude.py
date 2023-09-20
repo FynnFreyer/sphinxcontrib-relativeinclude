@@ -1,11 +1,16 @@
 # SPDX-FileCopyrightText: 2023-present Fynn Freyer <fynn.freyer@googlemail.com>
 #
 # SPDX-License-Identifier: MIT
-"""
-This module implements the :class:`RelativeInclude` class, which provides a new ``relativeinclude`` directive for reST.
-This and functions specifically for generating documentation and working with Sphinx.
 
-.. important:: This does not support nested includes!
+"""
+Module Documentation
+====================
+
+The :mod:`sphinxcontrib-relativeinclude.relativeinclude` module implements the :class:`RelativeInclude` class, which
+provides a new ``relativeinclude`` directive for reST. This directive works just like a normal include, but it will
+translate relative paths in the included document, so that they're relative to the document we're including from.
+
+.. warning:: This does not support nested includes yet!
 """
 
 import logging
@@ -23,8 +28,6 @@ from sphinxcontrib_relativeinclude.__about__ import __version__
 class LinkTranslator(GenericNodeVisitor):
     """
     Translates relative links in included documents with respect to the source document.
-
-    .. important:: This does not support nested includes!
     """
 
     resolve_attrs: ClassVar[Collection[str]] = (
@@ -78,8 +81,6 @@ class RelativeInclude(Include):
     """
     This class is supposed to implement a ``relativeinclude`` directive in Sphinx. It should automatically translate
     relative links in included documents and apart from that works just like ``.. include::``.
-
-    .. important:: This does not support nested includes yet!
     """
 
     resolve_attrs: ClassVar[Collection[str]] = (
@@ -121,7 +122,7 @@ class RelativeInclude(Include):
 
         return included_nodes
 
-    def translate(self, node, absolute_base: Path, relative_base: Path):
+    def translate(self, node: Node, absolute_base: Path, relative_base: Path):
         """
         Recursively translate relative nodes.
 
@@ -159,7 +160,7 @@ def setup(app):
     app.add_directive("relativeinclude", RelativeInclude)
 
     return {
-        "version": __version__,
+        "version": __display_version__,
         "parallel_read_safe": True,
         "parallel_write_safe": True,
     }
