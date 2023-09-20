@@ -49,6 +49,13 @@ class LinkTranslator(GenericNodeVisitor):
     )
     """ Attributes, that need changing. """
 
+    ignore_schemes: ClassVar[Collection[str]] = (
+        "http",
+        "https",
+        "data",
+    )
+    """ If we encounter these prefixes in a link, we leave it alone. """
+
     def __init__(self, document: Document, absolute_base: Path, relative_base: Path):
         """
         Initialize a ``LinkTranslator``.
@@ -72,14 +79,26 @@ class LinkTranslator(GenericNodeVisitor):
 
         for attr in attrs_to_resolve:
             old_target = node[attr]  # type: ignore [index]
+
+            # if this is a link, or a data URL, we skip it
+            if any(old_target.startswith(scheme) for scheme in self.ignore_schemes):
+                logger.info(f"{_identify(self)}: skipping data URL: {old_target}")
+                continue
+
             new_absolute_target = (self.rel_base / old_target).resolve()
             new_relative_target = relpath(new_absolute_target, self.abs_base)
 
-            node[attr] = new_relative_target  # type: ignore [index]
-            logger.info(
-                f"{_identify(self)}: changed {attr} in {_identify(node)} "
-                f"from {old_target} to {new_relative_target}."
-            )
+            if new_absolute_target.exists():
+                node[attr] = new_relative_target  # type: ignore [index]
+                logger.info(
+                    f"{_identify(self)}: changed {attr} in {_identify(node)} "
+                    f"from {old_target} to {new_relative_target}."
+                )
+            else:
+                logger.warn(
+                    f"{_identify(self)}: couldn't resolve {_identify(node)} "
+                    f"target path {new_absolute_target} derived from {old_target}. Skipping!"
+                )
 
             if hasattr(node, "resolved"):
                 node.resolved = 1
