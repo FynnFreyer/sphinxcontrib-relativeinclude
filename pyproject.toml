@@ -45,6 +45,24 @@ Source = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude"
 [tool.hatch.version]
 path = "src/sphinxcontrib_relativeinclude/__about__.py"
 
+[tool.hatch.envs.default]
+[tool.hatch.envs.default.scripts]
+tag = [
+    "git tag $(hatch version)",
+    "git push --tags",
+]
+release = [
+    # check for staged or unstaged changes
+    "git diff --exit-code",
+    "git diff --cached --exit-code",
+    # if none, we bump version, commit, and push
+    "hatch version {args:patch}",
+    "git commit -am 'build: bump version for release'",
+    "git push",
+    # afterwards publish the tag of the new version
+    "tag",
+]
+
 [tool.hatch.envs.test]
 dependencies = [
     "coverage[toml]>=6.5",
