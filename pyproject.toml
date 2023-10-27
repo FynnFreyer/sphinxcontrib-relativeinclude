@@ -29,7 +29,7 @@ classifiers = [
     "Framework :: Sphinx :: Extension",
 ]
 dependencies = [
-    "docutils",
+    "sphinx",
 ]
 
 [project.optional-dependencies]
