@@ -37,7 +37,7 @@ __authors__ = [
 
 __version__ = "0.0.1a1"
 
-__all__ = ["LinkTranslator", "RelativeInclude", "setup"]
+__all__ = ["LinkTranslator", "RelativeInclude", "setup", "__app_name__", "__author_name__", "__version__"]
 
 
 def _identify(obj: object) -> str:
