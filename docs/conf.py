@@ -5,14 +5,11 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 from sphinxcontrib_relativeinclude import RelativeInclude
-from sphinxcontrib_relativeinclude.__about__ import __version__
+from sphinxcontrib_relativeinclude.__about__ import __name__, __author_name__, __version__
 
-project = "sphinxcontrib-relativeinclude"
-author = "Fynn Freyer"
-copyright = "2023-present, Fynn Freyer"  # noqa: A001
-language = "en_US"
-
-version = __version__
+project = __name__
+author = __author_name__
+copyright = f"2023-present, {__author_name__}"  # noqa: A001
 release = __version__
 
 # -- General configuration ---------------------------------------------------

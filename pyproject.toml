@@ -7,12 +7,7 @@ name = "sphinxcontrib-relativeinclude"
 description = "Implements a new reST include directive to translate relative paths."
 readme = "README.md"
 license = "MIT"
-authors = [
-    { name = "Fynn Freyer", email = "fynn.freyer@googlemail.com" },
-]
 requires-python = ">=3.8"
-dynamic = ["version"]
-
 keywords = ["reST", "restructured text", "docutils", "sphinx"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -29,21 +24,26 @@ classifiers = [
     "Framework :: Sphinx :: Extension",
 ]
 dependencies = [
-    "docutils",
+    "sphinx",
 ]
+
+dynamic = ["version", "authors"]
 
 [project.optional-dependencies]
 dev = [
     "docutils-stubs",
 ]
 
+[tool.hatch.version]
+path = "src/sphinxcontrib_relativeinclude/__about__.py"
+
+[tool.hatch.authors]
+path = "src/sphinxcontrib_relativeinclude/__about__.py"
+
 [project.urls]
 Documentation = "https://fynnfreyer.github.io/sphinxcontrib-relativeinclude"
 Issues = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude/issues"
 Source = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude"
-
-[tool.hatch.version]
-path = "src/sphinxcontrib_relativeinclude/__about__.py"
 
 [tool.hatch.envs.default]
 [tool.hatch.envs.default.scripts]
@@ -180,9 +180,6 @@ ban-relative-imports = "all"
 source_pkgs = ["sphinxcontrib_relativeinclude", "tests"]
 branch = true
 parallel = true
-omit = [
-    "src/sphinxcontrib_relativeinclude/__about__.py",
-]
 
 [tool.coverage.paths]
 sphinxcontrib_relativeinclude = ["src/sphinxcontrib_relativeinclude", "*/sphinxcontrib-relativeinclude/src/sphinxcontrib_relativeinclude"]
