@@ -5,5 +5,5 @@
 .. relativeinclude:: ../README.md
    :parser: myst_parser.docutils_
 
-.. automodule:: sphinxcontrib_relativeinclude.relativeinclude
+.. automodule:: sphinxcontrib.relativeinclude
     :members:
