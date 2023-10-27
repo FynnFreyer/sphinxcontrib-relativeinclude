@@ -4,10 +4,10 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-from sphinxcontrib_relativeinclude import RelativeInclude
-from sphinxcontrib_relativeinclude.__about__ import __name__, __author_name__, __version__
+from sphinxcontrib.relativeinclude import RelativeInclude
+from sphinxcontrib.relativeinclude import __app_name__, __author_name__, __version__
 
-project = __name__
+project = __app_name__
 author = __author_name__
 copyright = f"2023-present, {__author_name__}"  # noqa: A001
 release = __version__

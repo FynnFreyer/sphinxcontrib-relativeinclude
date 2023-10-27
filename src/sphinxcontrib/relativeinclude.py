@@ -25,6 +25,20 @@ from sphinx.util import logging
 
 logger = logging.getLogger(__name__)
 
+__app_name__ = "sphinxcontrib-relativeinclude"
+__description__ = "Implements a new reST include directive to translate relative paths."
+
+__author_name__ = "Fynn Freyer"
+__author_email__ = "fynn.freyer@googlemail.com"
+
+__authors__ = [
+    {"name": __author_name__, "email": __author_email__},
+]
+
+__version__ = "0.0.1a1"
+
+__all__ = ["LinkTranslator", "RelativeInclude", "setup", "__app_name__", "__author_name__", "__version__"]
+
 
 def _identify(obj: object) -> str:
     """Provide a human-readable identifier for arbitrary objects."""
