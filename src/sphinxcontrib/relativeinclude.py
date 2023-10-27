@@ -17,7 +17,7 @@ from os.path import relpath
 from pathlib import Path
 from typing import ClassVar, Collection, List
 
-from docutils.nodes import GenericNodeVisitor, Node
+from docutils.nodes import Element, GenericNodeVisitor, Node
 from docutils.nodes import document as Document  # noqa: N812
 from docutils.parsers.rst.directives.misc import Include
 from sphinx import __display_version__
@@ -86,13 +86,13 @@ class LinkTranslator(GenericNodeVisitor):
     def default_visit(self, node: Node):
         """When visiting a node, we change all attrs with relative paths, defined in :attr:`change_attrs`."""
         # if we're resolved already, or there aren't any attributes to resolve, we move on
-        if hasattr(node, "resolved") and node.resolved or not hasattr(node, "attributes"):
+        if not isinstance(node, Element) or (hasattr(node, "resolved") and node.resolved):
             return
 
         attrs_to_resolve = [attr for attr in self.resolve_attrs if attr in node.attributes]
 
         for attr in attrs_to_resolve:
-            old_target = node[attr]  # type: ignore [index]
+            old_target = node[attr]
 
             # if this is a link, or a data URL, we skip it
             if any(old_target.startswith(scheme) for scheme in self.ignore_schemes):
@@ -103,7 +103,7 @@ class LinkTranslator(GenericNodeVisitor):
             new_relative_target = relpath(new_absolute_target, self.abs_base)
 
             if new_absolute_target.exists():
-                node[attr] = new_relative_target  # type: ignore [index]
+                node[attr] = new_relative_target
                 logger.info(
                     f"{_identify(self)}: changed {attr} in {_identify(node)} "
                     f"from {old_target} to {new_relative_target}."
@@ -115,7 +115,7 @@ class LinkTranslator(GenericNodeVisitor):
                 )
 
             if hasattr(node, "resolved"):
-                node.resolved = 1
+                node.resolved = True  # type: ignore [attr-defined]
 
     def unknown_visit(self, node: Node):
         """If we don't know a Node, we ignore it."""
@@ -161,11 +161,9 @@ class RelativeInclude(Include):
         Include a file as part of the content of this reST file, and translate any relative paths in the included file.
         """
 
-        # breakpoint()
         included_nodes = super().run()
 
         translator = LinkTranslator(self.state.document, self.include_source, self.include_target)
-        # self.state.document.settings.record_dependencies.list
         for node in included_nodes:
             node.walk(translator)
 
@@ -180,10 +178,10 @@ class RelativeInclude(Include):
         :param relative_base: The absolute path of the file we are including.
         """
         # if we're resolved already, or there aren't any attributes to resolve, we move on
-        if hasattr(node, "resolved") and node.resolved or not hasattr(node, "attributes"):
+        if not isinstance(node, Element) or (
+            hasattr(node, "resolved") and node.resolved  # type: ignore [attr-defined]
+        ):
             return
-
-        # breakpoint()
 
         attrs_to_resolve = [attr for attr in self.resolve_attrs if attr in node.attributes]
 
@@ -205,7 +203,7 @@ class RelativeInclude(Include):
             )
 
             if hasattr(node, "resolved"):
-                node.resolved = 1
+                node.resolved = True  # type: ignore [attr-defined]
 
 
 def setup(app):
