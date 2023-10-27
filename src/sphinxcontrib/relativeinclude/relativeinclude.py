@@ -23,7 +23,7 @@ from docutils.parsers.rst.directives.misc import Include
 from sphinx import __display_version__
 from sphinx.util import logging
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 def _identify(obj: object) -> str:
@@ -82,7 +82,7 @@ class LinkTranslator(GenericNodeVisitor):
 
             # if this is a link, or a data URL, we skip it
             if any(old_target.startswith(scheme) for scheme in self.ignore_schemes):
-                logger.info(f"{_identify(self)}: skipping data URL: {old_target}")
+                _logger.info(f"{_identify(self)}: skipping data URL: {old_target}")
                 continue
 
             new_absolute_target = (self.rel_base / old_target).resolve()
@@ -90,12 +90,12 @@ class LinkTranslator(GenericNodeVisitor):
 
             if new_absolute_target.exists():
                 node[attr] = new_relative_target  # type: ignore [index]
-                logger.info(
+                _logger.info(
                     f"{_identify(self)}: changed {attr} in {_identify(node)} "
                     f"from {old_target} to {new_relative_target}."
                 )
             else:
-                logger.warn(
+                _logger.warn(
                     f"{_identify(self)}: couldn't resolve {_identify(node)} "
                     f"target path {new_absolute_target} derived from {old_target}. Skipping!"
                 )
@@ -105,11 +105,11 @@ class LinkTranslator(GenericNodeVisitor):
 
     def unknown_visit(self, node: Node):
         """If we don't know a Node, we ignore it."""
-        logger.warn(f"{_identify(self)}: visited unknown node {_identify(node)} of type {type(node)}")
+        _logger.warn(f"{_identify(self)}: visited unknown node {_identify(node)} of type {type(node)}")
 
     def default_departure(self, node: Node):
         """Override abstract method for completeness."""
-        logger.info(f"{_identify(self)}: departing from {_identify(node)}.")
+        _logger.info(f"{_identify(self)}: departing from {_identify(node)}.")
 
 
 class RelativeInclude(Include):
@@ -184,7 +184,7 @@ class RelativeInclude(Include):
 
             node[attr] = new_relative_target
 
-            logger.info(
+            _logger.info(
                 f"{_identify(self)}: "
                 f"changed {attr} in {_identify(node)} "
                 f"from {old_target} to {new_absolute_target}."

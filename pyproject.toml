@@ -43,7 +43,7 @@ Issues = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude/issues"
 Source = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude"
 
 [tool.hatch.version]
-path = "src/sphinxcontrib_relativeinclude/__about__.py"
+path = "src/sphinxcontrib/relativeinclude/__about__.py"
 
 [tool.hatch.envs.default]
 [tool.hatch.envs.default.scripts]
@@ -68,7 +68,7 @@ dependencies = [
 
 [tool.hatch.envs.test.scripts]
 all = "pytest {args:tests}"
-all-cov = "all --cov={args:src/sphinxcontrib_relativeinclude}"
+all-cov = "all --cov={args:src/sphinxcontrib/relativeinclude}"
 cov-report = [
     "- coverage combine",
     "coverage report",
@@ -87,6 +87,7 @@ dependencies = [
 ]
 [tool.hatch.envs.docs.scripts]
 build = [
+    "- mkdir -p docs/_build",
     "- rm -r docs/_build/{args}",
     # in case of pdf we have to use the latex builder, otherwise we can proceed
     'if [ "{args}" = "pdf" ]; then sphinx-build -aE -b latex docs docs/_build/pdf; else sphinx-build -aE -b {args} docs docs/_build/{args}; fi',
@@ -101,7 +102,7 @@ dependencies = [
     "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:src/sphinxcontrib_relativeinclude tests}"
+typing = "mypy --install-types --non-interactive {args:src/sphinxcontrib/relativeinclude tests}"
 style = [
     "ruff {args:.}",
     "black --check --diff {args:.}",
@@ -167,7 +168,7 @@ unfixable = [
 ]
 
 [tool.ruff.isort]
-known-first-party = ["sphinxcontrib_relativeinclude"]
+known-first-party = ["sphinxcontrib.relativeinclude"]
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "all"
@@ -177,15 +178,15 @@ ban-relative-imports = "all"
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 
 [tool.coverage.run]
-source_pkgs = ["sphinxcontrib_relativeinclude", "tests"]
+source_pkgs = ["sphinxcontrib.relativeinclude", "tests"]
 branch = true
 parallel = true
 omit = [
-    "src/sphinxcontrib_relativeinclude/__about__.py",
+    "src/sphinxcontrib/relativeinclude/__about__.py",
 ]
 
 [tool.coverage.paths]
-sphinxcontrib_relativeinclude = ["src/sphinxcontrib_relativeinclude", "*/sphinxcontrib-relativeinclude/src/sphinxcontrib_relativeinclude"]
+sphinxcontrib.relativeinclude = ["src/sphinxcontrib/relativeinclude", "*/sphinxcontrib-relativeinclude/src/sphinxcontrib/relativeinclude"]
 tests = ["tests", "*/sphinxcontrib-relativeinclude/tests"]
 
 [tool.coverage.report]

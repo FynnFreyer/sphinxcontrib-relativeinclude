@@ -19,6 +19,7 @@ pip install sphinxcontrib-relativeinclude
 ```
 
 You can find the contents of the README and the module documentation for the latest release [online](https://fynnfreyer.github.io/sphinxcontrib-relativeinclude).
+It's also available [PDF](https://fynnfreyer.github.io/sphinxcontrib-relativeinclude/files/sphinxcontrib-relativeinclude.pdf) or [EPUB](https://fynnfreyer.github.io/sphinxcontrib-relativeinclude/files/sphinxcontrib-relativeinclude.epub).
 
 ## Motivation
 
