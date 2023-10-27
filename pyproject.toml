@@ -104,7 +104,7 @@ dependencies = [
     "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:src/sphinxcontrib_relativeinclude tests}"
+typing = "mypy --install-types --non-interactive --cache-dir=.mypy_cache/ {args:src/sphinxcontrib/relativeinclude.py tests}"
 style = [
     "ruff {args:.}",
     "black --check --diff {args:.}",
@@ -198,3 +198,7 @@ exclude_lines = [
 [tool.mypy]
 python_version = "3.8"
 warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = 'sphinx.*'
+ignore_missing_imports = true
