@@ -1,5 +1,8 @@
 name: Publish documentation to GH-Pages
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
