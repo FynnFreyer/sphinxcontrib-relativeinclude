@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
-packages = ["src/sphinxcontrib/"]
+packages = ["src/"]
 
 [project]
 name = "sphinxcontrib-relativeinclude"
@@ -71,7 +71,7 @@ dependencies = [
 
 [tool.hatch.envs.test.scripts]
 all = "pytest {args:tests}"
-all-cov = "all --cov={args:src/sphinxcontrib_relativeinclude}"
+all-cov = "all --cov={args:src/sphinxcontrib/relativeinclude.py}"
 cov-report = [
     "- coverage combine",
     "coverage report",
