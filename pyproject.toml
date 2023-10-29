@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
-packages = ["src/"]
+packages = ["src/sphinxcontrib"]
 
 [project]
 name = "sphinxcontrib-relativeinclude"
@@ -27,6 +27,7 @@ classifiers = [
     "Framework :: Sphinx :: Extension",
 ]
 dependencies = [
+    "docutils",
     "sphinx",
 ]
 
@@ -34,7 +35,10 @@ dynamic = ["version", "authors"]
 
 [project.optional-dependencies]
 dev = [
+    "coverage[toml]",
     "docutils-stubs",
+    "pytest",
+    "pytest-cov",
 ]
 
 [tool.hatch.version]
@@ -63,14 +67,12 @@ release = [
 ]
 
 [tool.hatch.envs.test]
-dependencies = [
-    "coverage[toml]>=6.5",
-    "pytest",
-    "pytest-cov",
+features = [
+    "dev",
 ]
 
 [tool.hatch.envs.test.scripts]
-all = "pytest {args:tests}"
+all = "python3 -m pytest ."
 all-cov = "all --cov={args:src/sphinxcontrib/relativeinclude.py}"
 cov-report = [
     "- coverage combine",
@@ -128,31 +130,8 @@ skip-string-normalization = true
 target-version = "py38"
 line-length = 120
 select = [
-    "A",
-    "ARG",
-    "B",
-    "C",
-    "DTZ",
-    "E",
-    "EM",
-    "F",
-    "FBT",
-    "I",
-    "ICN",
-    "ISC",
-    "N",
-    "PLC",
-    "PLE",
-    "PLR",
-    "PLW",
-    "Q",
-    "RUF",
-    "S",
-    "T",
-    "TID",
-    "UP",
-    "W",
-    "YTT",
+    "A", "ARG", "B", "C", "DTZ", "E", "EM", "F", "FBT", "I", "ICN", "ISC", "N",
+    "PLC", "PLE", "PLR", "PLW", "Q", "RUF", "S", "T", "TID", "UP", "W", "YTT",
 ]
 ignore = [
     # Allow non-abstract empty methods in abstract base classes
@@ -178,6 +157,10 @@ ban-relative-imports = "all"
 [tool.ruff.per-file-ignores]
 # Tests can use magic values, assertions, and relative imports
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src/", "src/sphinxcontrib"]
+testpaths = "tests/"
 
 [tool.coverage.run]
 source_pkgs = ["sphinxcontrib.relativeinclude", "tests"]
