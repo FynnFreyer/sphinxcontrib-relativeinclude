@@ -19,6 +19,7 @@ pip install sphinxcontrib-relativeinclude
 ```
 
 You can find the contents of the README and the module documentation for the latest release [online](https://fynnfreyer.github.io/sphinxcontrib-relativeinclude).
+It's also available [PDF](https://fynnfreyer.github.io/sphinxcontrib-relativeinclude/files/sphinxcontrib-relativeinclude.pdf) or [EPUB](https://fynnfreyer.github.io/sphinxcontrib-relativeinclude/files/sphinxcontrib-relativeinclude.epub).
 
 ## Motivation
 
@@ -53,17 +54,18 @@ This way your images show up in your documentation output, but you don't have to
 
 ## Usage
 
-You have to register the directive in the `setup` function in your `conf.py` file.
-(This is a bug, see [TODOs](#todos))
+You have to enable the extension in your `conf.py` file.
 
 ```python
-def setup(app):
-    """Register the directive."""
-    from sphinxcontrib_relativeinclude import RelativeInclude
-    app.add_directive("relativeinclude", RelativeInclude)
+# in conf.py
+extensions = [
+    # ...
+    "sphinxcontrib.relativeinclude",
+    # ...
+]
 ```
 
-Then you can use it in your documentation index under the registered name.
+After that, the directive will be available for you to use in your documentation.
 
 ```rst
 .. relativeinclude: ../README.md
@@ -74,7 +76,7 @@ It supports the same options as the standard [`include`](https://docutils.source
 If not, you've found a bug, and I'd be happy if you reported it on the [issue tracker](https://github.com/FynnFreyer/sphinxcontrib-relativeinclude/issues).
 Please provide thorough description, and a minimal reproducible example, i.e., (abbreviated) reST files you used, potentially your `conf.py` contents and maybe other relevant info.
 
-If you want to see some real code, check out this repositories [`docs/index.rst`](https://github.com/FynnFreyer/sphinxcontrib-relativeinclude/blob/main/docs/index.rst).
+If you want to see some real code, check out this repository's documentation at [`docs/index.rst`](https://github.com/FynnFreyer/sphinxcontrib-relativeinclude/blob/main/docs/index.rst).
 
 ## TODOs
 

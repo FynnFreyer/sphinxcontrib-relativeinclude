@@ -4,15 +4,11 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-from sphinxcontrib_relativeinclude import RelativeInclude
-from sphinxcontrib_relativeinclude.__about__ import __version__
+from sphinxcontrib.relativeinclude import __app_name__, __author_name__, __version__
 
-project = "sphinxcontrib-relativeinclude"
-author = "Fynn Freyer"
-copyright = "2023-present, Fynn Freyer"  # noqa: A001
-language = "en_US"
-
-version = __version__
+project = __app_name__
+author = __author_name__
+copyright = f"2023-present, {__author_name__}"  # noqa: A001
 release = __version__
 
 # -- General configuration ---------------------------------------------------
@@ -22,6 +18,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx_rtd_theme",
     "sphinxcontrib.cairosvgconverter",
+    "sphinxcontrib.relativeinclude",
 ]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -48,8 +45,3 @@ add_module_names = False
 
 autodoc_mock_imports = ["docutils", "sphinx"]
 autodoc_member_order = "bysource"
-
-
-def setup(app):
-    """Register the directive."""
-    app.add_directive("relativeinclude", RelativeInclude)

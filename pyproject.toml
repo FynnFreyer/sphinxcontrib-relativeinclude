@@ -1,18 +1,16 @@
 [build-system]
-requires = ["hatchling", "hatch-requirements-txt"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+packages = ["src/"]
 
 [project]
 name = "sphinxcontrib-relativeinclude"
 description = "Implements a new reST include directive to translate relative paths."
 readme = "README.md"
 license = "MIT"
-authors = [
-    { name = "Fynn Freyer", email = "fynn.freyer@googlemail.com" },
-]
 requires-python = ">=3.8"
-dynamic = ["version"]
-
 keywords = ["reST", "restructured text", "docutils", "sphinx"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -29,21 +27,26 @@ classifiers = [
     "Framework :: Sphinx :: Extension",
 ]
 dependencies = [
-    "docutils",
+    "sphinx",
 ]
+
+dynamic = ["version", "authors"]
 
 [project.optional-dependencies]
 dev = [
     "docutils-stubs",
 ]
 
+[tool.hatch.version]
+path = "src/sphinxcontrib/relativeinclude.py"
+
+[tool.hatch.authors]
+path = "src/sphinxcontrib/relativeinclude.py"
+
 [project.urls]
 Documentation = "https://fynnfreyer.github.io/sphinxcontrib-relativeinclude"
 Issues = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude/issues"
 Source = "https://github.com/FynnFreyer/sphinxcontrib-relativeinclude"
-
-[tool.hatch.version]
-path = "src/sphinxcontrib_relativeinclude/__about__.py"
 
 [tool.hatch.envs.default]
 [tool.hatch.envs.default.scripts]
@@ -68,7 +71,7 @@ dependencies = [
 
 [tool.hatch.envs.test.scripts]
 all = "pytest {args:tests}"
-all-cov = "all --cov={args:src/sphinxcontrib_relativeinclude}"
+all-cov = "all --cov={args:src/sphinxcontrib/relativeinclude.py}"
 cov-report = [
     "- coverage combine",
     "coverage report",
@@ -101,7 +104,7 @@ dependencies = [
     "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:src/sphinxcontrib_relativeinclude tests}"
+typing = "mypy --install-types --non-interactive --cache-dir=.mypy_cache/ {args:src/sphinxcontrib/relativeinclude.py tests}"
 style = [
     "ruff {args:.}",
     "black --check --diff {args:.}",
@@ -177,15 +180,12 @@ ban-relative-imports = "all"
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 
 [tool.coverage.run]
-source_pkgs = ["sphinxcontrib_relativeinclude", "tests"]
+source_pkgs = ["sphinxcontrib.relativeinclude", "tests"]
 branch = true
 parallel = true
-omit = [
-    "src/sphinxcontrib_relativeinclude/__about__.py",
-]
 
 [tool.coverage.paths]
-sphinxcontrib_relativeinclude = ["src/sphinxcontrib_relativeinclude", "*/sphinxcontrib-relativeinclude/src/sphinxcontrib_relativeinclude"]
+sphinxcontrib_relativeinclude = ["src/sphinxcontrib", "*/sphinxcontrib-relativeinclude/src/sphinxcontrib"]
 tests = ["tests", "*/sphinxcontrib-relativeinclude/tests"]
 
 [tool.coverage.report]
@@ -198,3 +198,7 @@ exclude_lines = [
 [tool.mypy]
 python_version = "3.8"
 warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = 'sphinx.*'
+ignore_missing_imports = true

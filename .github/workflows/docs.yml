@@ -1,5 +1,8 @@
 name: Publish documentation to GH-Pages
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -8,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        lfs: true
+    - name: Checkout LFS objects
+      run: git lfs checkout
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -17,7 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install hatch
         sudo apt update && sudo apt upgrade -y
-        sudo apt install -y texlive-latex-extra texlive-fonts-recommended
+        sudo apt install -y latexmk texlive-fonts-recommended texlive-latex-extra texlive-pictures
     - name: Ensure proper style
       run: python -m hatch run lint:style
     - name: Generate docs
