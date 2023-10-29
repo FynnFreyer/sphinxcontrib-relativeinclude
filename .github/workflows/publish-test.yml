@@ -4,7 +4,6 @@ name: Publish package to TestPyPI
 on:
   push:
     branches:
-      - main
       - dev
 
 jobs:
@@ -17,7 +16,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
-          lfs: true
       - name: Install hatch
         run: python3 -m pip install hatch --user
       - name: Build wheel and sdist
@@ -51,3 +49,37 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+
+  github-release:
+    name: >-
+      Sign package with Sigstore
+      and upload them to GitHub Release
+    # only publish to GH release on tag pushes
+    if: startsWith(github.ref, 'refs/tags/')
+    needs:
+      - publish-to-testpypi
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Sign the dists with Sigstore
+        uses: sigstore/gh-action-sigstore-python@v1.2.3
+        with:
+          inputs: >-
+            ./dist/*.tar.gz
+            ./dist/*.whl
+      - name: Upload artifact signatures to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          gh release upload
+          '${{ github.ref_name }}' dist/**
+          --repo '${{ github.repository }}'
