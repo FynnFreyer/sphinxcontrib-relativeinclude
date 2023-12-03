@@ -33,7 +33,6 @@ jobs:
   publish-to-pypi:
     name: >-
       Publish package
-    # only publish to PyPI on tag pushes
     needs:
       - build
     runs-on: ubuntu-latest

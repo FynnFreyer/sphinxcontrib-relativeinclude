@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
-packages = ["src/"]
+packages = ["src/sphinxcontrib"]
 
 [project]
 name = "sphinxcontrib-relativeinclude"
@@ -170,7 +170,7 @@ unfixable = [
 ]
 
 [tool.ruff.isort]
-known-first-party = ["sphinxcontrib_relativeinclude"]
+known-first-party = ["sphinxcontrib.relativeinclude"]
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "all"
