@@ -35,7 +35,7 @@ __authors__ = [
     {"name": __author_name__, "email": __author_email__},
 ]
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 
 __all__ = ["LinkTranslator", "RelativeInclude", "setup", "__app_name__", "__author_name__", "__version__"]
 
